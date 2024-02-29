@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('drive_types', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('type'); // e.g FWD (Front Wheel Drive), RWD (Rear Wheel Drive), AWD (All Wheel Drive), 4WD (Four Wheel Drive)
+            $table->string('type')->unique(); // e.g FWD (Front Wheel Drive), RWD (Rear Wheel Drive), 4WD (Four Wheel Drive), AWD (All Wheel Drive)
             $table->softDeletes();
             $table->timestamps();
         });

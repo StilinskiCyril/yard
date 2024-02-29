@@ -27,8 +27,8 @@ return new class extends Migration
             $table->integer('mileage'); // in km
             $table->integer('yom'); // year of manufacture
             $table->string('color'); // e.g. blue
-            $table->string('horse_power'); // e.g. 300hp
-            $table->string('torque'); // e.g. 400Nm
+            $table->integer('horse_power'); // in hp
+            $table->integer('torque'); // in Nm
             $table->integer('availability')->default(1); // 1: available, 2: sold, 3: in transit
             $table->text('features'); // e.g. sunroof, leather seats
             $table->softDeletes();

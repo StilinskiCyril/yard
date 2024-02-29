@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('fuel_types', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('fuel_type'); // 1: petrol, 2: diesel, 3: electric, 4: hybrid
+            $table->string('type')->unique(); // 1: petrol, 2: diesel, 3: electric, 4: hybrid
             $table->softDeletes();
             $table->timestamps();
         });

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
+            $table->string('currency')->unique(); // e.g. KES, USD
+            $table->softDeletes();
             $table->timestamps();
         });
     }
