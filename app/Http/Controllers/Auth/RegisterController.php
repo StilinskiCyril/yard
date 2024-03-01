@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -52,7 +52,6 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'msisdn' => ['required', 'string', new ValidateMsisdn(true, 'User')],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'confirmed', Password::min(8)->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
         ]);
@@ -66,15 +65,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        return User::create([
             'name' => $data['name'],
-            'msisdn' => $data['msisdn'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-        $user->assignRole('company-admin');
-
-        return $user;
     }
 }

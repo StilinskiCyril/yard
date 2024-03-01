@@ -15,7 +15,7 @@ class HomeController extends Controller
     // Show the application dashboard.
     public function showDashboard()
     {
-        return view('home');
+        return view('dashboard');
     }
 
     // Register step one

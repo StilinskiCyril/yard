@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,8 @@ Route::get('/register2/company', [HomeController::class, 'showRegistrationStepTw
 Route::post('/register2/company', [HomeController::class, 'registerStepTwo'])->name('home.register-step-two');
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/home', [HomeController::class, 'showDashboard'])->name('home.show-dashboard');
+    // Dashboard
+    Route::get('/dashboard', [HomeController::class, 'showDashboard'])->name('home.show-dashboard');
+    // Logout
+    Route::get('logout', [LoginController::class, 'logout'])->name('home.logout');
 });
