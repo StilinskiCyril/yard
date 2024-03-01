@@ -17,8 +17,8 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $existing_admin = User::where('msisdn', '254705799644')->first();
-        if(!$existing_admin){
+        $existingAdmin = User::where('msisdn', '254705799644')->first();
+        if(!$existingAdmin){
             $admin = User::create([
                 'name' => 'Cyril Aguvasu',
                 'msisdn' => '254705799644',

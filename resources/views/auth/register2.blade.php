@@ -26,33 +26,32 @@
                 <div class="d-table-cell align-middle">
 
                     <div class="text-center mt-4">
-                        <h1 class="h2">Create a Dealer Account</h1>
+                        <h1 class="h2">You Are Almost Done</h1>
                         <p class="lead">
-                            Step 1: Company Information
+                            Step 2: Company Representative
                         </p>
-                        <p>Tell us about your company</p>
                         @include('layouts.flash-message')
                     </div>
 
                     <div class="card">
                         <div class="card-body">
                             <div class="m-sm-4">
-                                <form action="{{ route('home.register-step-one') }}" method="POST">
+                                <form action="{{ route('register') }}" method="POST">
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="company_name">Company Name</label>
-                                            <input id="company_name" class="form-control @error('company_name') is-invalid @enderror" type="text" name="company_name" value="{{ old('company_name') }}" required/>
-                                            @error('company_name')
+                                            <label for="name">Full Name</label>
+                                            <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name') }}" required/>
+                                            @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="company_msisdn">Enter Phone/ Msisdn</label>
-                                            <input id="company_msisdn" class="form-control @error('company_msisdn') is-invalid @enderror" type="text" name="company_msisdn" value="{{ old('company_msisdn') }}" required/>
-                                            @error('company_msisdn')
+                                            <label for="msisdn">Enter Phone/ Msisdn</label>
+                                            <input id="msisdn" class="form-control @error('msisdn') is-invalid @enderror" type="text" name="msisdn" value="{{ old('msisdn') }}" required/>
+                                            @error('msisdn')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -61,34 +60,36 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="company_email">Enter Email</label>
-                                            <input id="company_email" class="form-control @error('company_email') is-invalid @enderror" type="email" name="company_email" value="{{ old('company_email') }}" required/>
-                                            @error('company_email')
+                                            <label for="email">Enter Email</label>
+                                            <input id="email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required/>
+                                            @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="no_of_employees">No Of Employees</label>
-                                            <input id="no_of_employees" class="form-control @error('no_of_employees') is-invalid @enderror" type="number" min="1" name="no_of_employees" value="{{ old('no_of_employees') }}" required/>
-                                            @error('no_of_employees')
+                                            <label for="company_position">Company Position e.g. CEO, HR</label>
+                                            <input id="company_position" class="form-control @error('company_position') is-invalid @enderror" type="text" min="1" name="company_position" value="{{ old('company_position') }}" required/>
+                                            @error('company_position')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <label for="address">Address e.g. Nairobi, Kenya</label>
-                                            <input id="address" class="form-control @error('address') is-invalid @enderror" type="text" name="address" value="{{ old('address') }}" required/>
-                                            @error('address')
-                                            <span class="invalid-feedback" role="alert">
+                                    <div class="form-group">
+                                        <label for="password">Enter Password</label>
+                                        <input id="password" class="form-control @error('password') is-invalid @enderror" type="password" name="password" value="{{ old('password') }}" required/>
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                            @enderror
-                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password_confirmation">Confirm Password</label>
+                                        <input id="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" required/>
                                     </div>
                                     <div>
                                         <div class="custom-control custom-checkbox align-items-center">
@@ -101,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="text-center mt-3">
-                                        <button type="submit" class="btn btn-lg btn-primary btn-block">Proceed To Step 2</button>
+                                        <button type="submit" class="btn btn-lg btn-primary btn-block">Create Account</button>
                                     </div>
                                     <div class="text-center mt-3">
                                         <small>
