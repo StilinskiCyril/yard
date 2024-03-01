@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('about')->nullable();
             $table->string('logo_url')->nullable();
             $table->string('kyc_doc_url')->nullable();
-            $table->string('account_no'); // to be used for payments
+            $table->string('account_no')->unique(); // to be used for payments
             $table->double('wallet_balance')->default(0);
             $table->integer('status')->default(1); // 0: inactive, 1: active, 2:suspended
             $table->softDeletes();

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('makes', function (Blueprint $table) {
+        Schema::create('drive_setups', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('make')->unique();
-            $table->string('logo_url')->nullable();
+            $table->string('setup')->unique(); // Left-Hand Drive, Right-Hand Drive
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('makes');
+        Schema::dropIfExists('drive_setups');
     }
 };

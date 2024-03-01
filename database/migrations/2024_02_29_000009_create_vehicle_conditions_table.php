@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('makes', function (Blueprint $table) {
+        Schema::create('vehicle_conditions', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('make')->unique();
-            $table->string('logo_url')->nullable();
+            $table->string('condition')->unique(); // Brand-New, Foreign-Used, Local-Used
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('makes');
+        Schema::dropIfExists('vehicle_conditions');
     }
 };

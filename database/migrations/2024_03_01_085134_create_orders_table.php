@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('makes', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('make')->unique();
-            $table->string('logo_url')->nullable();
+            $table->foreignId('vehicle_id')->constrained();
+            $table->string('account_no')->unique(); // to be used for payment (mpesa)
+            $table->double('amount');
+            $table->boolean('payment_status')->default(false); // 0: pending, 1: paid
+            $table->dateTime('paid_on')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('makes');
+        Schema::dropIfExists('orders');
     }
 };

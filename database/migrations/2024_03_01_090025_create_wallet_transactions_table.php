@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('makes', function (Blueprint $table) {
+        Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('make')->unique();
-            $table->string('logo_url')->nullable();
+            $table->foreignId('company_id')->constrained();
+            $table->double('amount'); // will have positives (credit) and negatives (debit)
+            $table->string('type'); // e.g. credit, debit
+            $table->string('notes');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('makes');
+        Schema::dropIfExists('wallet_transactions');
     }
 };
