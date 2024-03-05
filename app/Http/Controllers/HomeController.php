@@ -9,13 +9,18 @@ use App\Rules\ValidateMsisdn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
     // Show the application dashboard.
-    public function showDashboard()
+    public function showDashboard(Request $request)
     {
-        return view('dashboard');
+        if ($request->user()->hasRole('admin')){
+            return Inertia::render('AdminDashboard');
+        } else {
+            return Inertia::render('CompanyDashboard');
+        }
     }
 
     // Register step one
