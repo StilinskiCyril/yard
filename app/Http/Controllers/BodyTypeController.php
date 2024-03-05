@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\BodyType;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BodyTypeController extends Controller
 {
+    public function load(Request $request)
+    {
+        // Load counties
+        if ($request->input('paginate')){
+            return BodyType::filter($request)->paginate(50);
+        } else {
+            return BodyType::filter($request)->get();
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Inertia::render('Admin/BodyType');
     }
 
     /**

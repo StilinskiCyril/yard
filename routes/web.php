@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BodyTypeController;
+use App\Http\Controllers\CountyController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,15 +24,30 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::post('counties/load', [CountyController::class, 'load'])->name('counties.load');
+
 // Register company step one
-Route::post('/register/company', [HomeController::class, 'registerStepOne'])->name('home.register-step-one');
+Route::post('register/company', [HomeController::class, 'registerStepOne'])->name('home.register-step-one');
 // Register company step two
-Route::get('/register2/company', [HomeController::class, 'showRegistrationStepTwo'])->name('home.show-registration-form-step-two');
-Route::post('/register2/company', [HomeController::class, 'registerStepTwo'])->name('home.register-step-two');
+Route::get('register2/company', [HomeController::class, 'showRegistrationStepTwo'])->name('home.show-registration-form-step-two');
+Route::post('register2/company', [HomeController::class, 'registerStepTwo'])->name('home.register-step-two');
 
 Route::middleware(['auth:web'])->group(function () {
     // Dashboard
-    Route::get('/dashboard', [HomeController::class, 'showDashboard'])->name('home.show-dashboard');
+    Route::get('dashboard', [HomeController::class, 'showDashboard'])->name('home.show-dashboard');
     // Logout
     Route::get('logout', [LoginController::class, 'logout'])->name('home.logout');
+
+
+    // Admin routes
+    Route::prefix('admin')->group(function () {
+
+        // App metadata
+        Route::prefix('app-metadata')->group(function () {
+            Route::resources([
+                'counties' => CountyController::class,
+                'body-types' => BodyTypeController::class,
+            ]);
+        });
+    });
 });

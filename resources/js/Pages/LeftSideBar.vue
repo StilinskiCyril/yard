@@ -79,7 +79,7 @@ export default {
                         <i class="align-middle mr-2 fas fa-fw fa-search"></i> <span class="align-middle">App Metadata</span>
                     </a>
                     <ul id="metadata" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                        <li class="sidebar-item"><a class="sidebar-link" href="#">Counties</a></li>
+                        <li class="sidebar-item"><Link class="sidebar-link" :href="route('counties.index')">Counties</Link></li>
                         <li class="sidebar-item"><a class="sidebar-link" href="#">Body Types</a></li>
                         <li class="sidebar-item"><a class="sidebar-link" href="#">Drive Setups</a></li>
                         <li class="sidebar-item"><a class="sidebar-link" href="#">Drive Types</a></li>

@@ -65,7 +65,7 @@ class CountySeeder extends Seeder
 
         foreach ($items as $item) {
             County::updateOrCreate([
-                'county' => $item
+                'name' => $item
             ]);
         }
     }

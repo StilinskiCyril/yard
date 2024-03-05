@@ -1,16 +1,16 @@
 <script>
-import Layout from './Layout.vue';
-import {Link} from "@inertiajs/vue3";
+import Layout from './../Layout.vue';
+import {Link, Head} from "@inertiajs/vue3";
 
 export default {
     name: "AdminDashboard",
-    components: {Layout, Link},
+    components: {Layout, Link, Head},
     //
 }
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Admin Dashboard" />
     <Layout>
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">

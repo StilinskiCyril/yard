@@ -17,9 +17,9 @@ class HomeController extends Controller
     public function showDashboard(Request $request)
     {
         if ($request->user()->hasRole('admin')){
-            return Inertia::render('AdminDashboard');
+            return Inertia::render('Admin/Dashboard');
         } else {
-            return Inertia::render('CompanyDashboard');
+            return Inertia::render('Company/Dashboard');
         }
     }
 
