@@ -4,62 +4,64 @@ namespace App\Http\Controllers;
 
 use App\Models\VehicleCondition;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class VehicleConditionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function load(Request $request)
+    {
+        if ($request->input('paginate')){
+            return VehicleCondition::filter($request)->paginate(50);
+        } else {
+            return VehicleCondition::filter($request)->get();
+        }
+    }
+
     public function index()
     {
-        //
+        return Inertia::render('Admin/VehicleCondition');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'condition' => ['required', 'string', 'max:50', 'unique:vehicle_conditions']
+        ]);
+
+        VehicleCondition::create([
+            'condition' => $request->condition
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record created'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(VehicleCondition $vehicleCondition)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(VehicleCondition $vehicleCondition)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, VehicleCondition $vehicleCondition)
     {
-        //
+        $request->validate([
+            'condition' => ['required', 'string', 'max:50', Rule::unique('vehicle_conditions')->ignore($vehicleCondition->id)]
+        ]);
+
+        $vehicleCondition->update([
+            'condition' => $request->condition
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record updated'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(VehicleCondition $vehicleCondition)
     {
-        //
+        $vehicleCondition->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record deleted'
+        ]);
     }
 }

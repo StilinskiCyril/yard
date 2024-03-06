@@ -4,62 +4,64 @@ namespace App\Http\Controllers;
 
 use App\Models\DriveType;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class DriveTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function load(Request $request)
+    {
+        if ($request->input('paginate')){
+            return DriveType::filter($request)->paginate(50);
+        } else {
+            return DriveType::filter($request)->get();
+        }
+    }
+
     public function index()
     {
-        //
+        return Inertia::render('Admin/DriveType');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type' => ['required', 'string', 'max:50', 'unique:drive_types']
+        ]);
+
+        DriveType::create([
+            'type' => $request->type
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record created'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DriveType $driveType)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DriveType $driveType)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, DriveType $driveType)
     {
-        //
+        $request->validate([
+            'type' => ['required', 'string', 'max:50', Rule::unique('drive_types')->ignore($driveType->id)]
+        ]);
+
+        $driveType->update([
+            'type' => $request->type
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record updated'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(DriveType $driveType)
     {
-        //
+        $driveType->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record deleted'
+        ]);
     }
 }

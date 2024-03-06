@@ -13,7 +13,7 @@
                                 <p class="text-left">Manage Counties</p>
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i>
+                                <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-circle-plus"></i>
                                     Create County
                                 </button>
                             </div>
@@ -62,6 +62,10 @@
                     </div>
                     <div class="card-footer">
                         <Bootstrap5Pagination @limit=20 :data="payloadFromDb" @pagination-change-page="loadPayloadFromApi"/>
+                        <div class="text-center">Showing Page {{ payloadFromDb.current_page }} Of {{ payloadFromDb.last_page }}</div>
+                        <div class="text-center" v-if="payloadFromDb.total < 1">
+                            <h6 class="text-danger">No results found</h6>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,7 +145,7 @@ import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
     name: "County",
-    components: {Layout, Link, Head, Bootstrap5Pagination, axiosErrorHandler},
+    components: {Layout, Link, Head, Bootstrap5Pagination},
     data() {
         return {
             payloadFromDb: {},
@@ -156,7 +160,7 @@ export default {
                 processing: false
             },
             updateForm: {
-                countyUuid: undefined,
+                uuid: undefined,
                 name: undefined,
                 processing: false
             }
@@ -168,7 +172,7 @@ export default {
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('counties.load', {'page': page}), this.filterForm).then(response => {
+            axios.post(route('counties.load', {page: page}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -197,13 +201,13 @@ export default {
             });
         },
         showUpdateRecordModal(col){
-            this.updateForm.countyUuid = col.uuid;
+            this.updateForm.uuid = col.uuid;
             this.updateForm.name = col.name;
             $('#updateRecordModal').modal('show');
         },
         updateRecord(){
             this.updateForm.processing = true;
-            axios.put(route('counties.update', { county : this.updateForm.countyUuid}), this.updateForm).then((response) => {
+            axios.put(route('counties.update', { county : this.updateForm.uuid}), this.updateForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
                     this.updateForm.name = undefined;

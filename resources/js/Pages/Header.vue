@@ -55,13 +55,13 @@ export default {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">App Metadata</a>
                         <ul class="dropdown-menu">
+                            <li><Link class="dropdown-item" :href="route('body-types.index')">Body Types</Link></li>
+                            <li><Link class="dropdown-item" :href="route('drive-setups.index')">Drive Setups</Link></li>
+                            <li><Link class="dropdown-item" :href="route('drive-types.index')">Drive Types</Link></li>
+                            <li><Link class="dropdown-item" :href="route('makes.index')">Makes & Models</Link></li>
+                            <li><Link class="dropdown-item" :href="route('transmission-types.index')">Transmission Types</Link></li>
+                            <li><Link class="dropdown-item" :href="route('vehicle-conditions.index')">Vehicle Conditions</Link></li>
                             <li><Link class="dropdown-item" :href="route('counties.index')">Counties</Link></li>
-                            <li><a class="dropdown-item" href="#">Body Types</a></li>
-                            <li><a class="dropdown-item" href="#">Drive Setups</a></li>
-                            <li><a class="dropdown-item" href="#">Drive Types</a></li>
-                            <li><a class="dropdown-item" href="#">Makes & Models</a></li>
-                            <li><a class="dropdown-item" href="#">Transmission Types</a></li>
-                            <li><a class="dropdown-item" href="#">Vehicle Conditions</a></li>
                         </ul>
                     </li>
                 </ul>

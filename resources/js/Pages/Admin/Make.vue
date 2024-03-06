@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Body Types" />
+    <Head title="Makes" />
 
     <Layout>
 
@@ -10,11 +10,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-left">Manage Body Types</p>
+                                <p class="text-left">Manage Makes</p>
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-circle-plus"></i>
-                                    Create Body Type
+                                    Create Make
                                 </button>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                         <form>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter body type">
+                                    <input v-model="filterForm.make" type="text" class="form-control" placeholder="Enter make">
                                 </div>
                                 <div class="col-md-2">
                                     <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
@@ -40,17 +40,30 @@
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>Body Type</th>
-                                    <th colspan="2">Action</th>
+                                    <th>Logo</th>
+                                    <th>Make</th>
+                                    <th>No Of Models</th>
+                                    <th colspan="3">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="col in payloadFromDb.data" :key="col.uuid">
                                     <td>
-                                        <p>{{ col.type }}</p>
+                                        <img :src="col.formatted_logo_url" alt="Make logo" height="30" width="30" class="rounded-circle">
+                                    </td>
+                                    <td>
+                                        <p>{{ col.make }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ col.make_models_count }}</p>
                                     </td>
                                     <td>
                                         <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>
+                                    </td>
+                                    <td>
+                                        <Link :href="route('makes.show', { make: col.uuid})">
+                                            <button class="btn btn-outline-primary btn-sm"><i class="fas fa-car"></i> view models</button>
+                                        </Link>
                                     </td>
                                     <td>
                                         <button @click.prevent="deleteRecord(col)" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i> delete</button>
@@ -76,15 +89,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create Body Type</h4>
+                        <h4 class="modal-title">Create Make</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body">
-                                <form>
+                                <form enctype="multipart/form-data">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="createForm.type" placeholder="Enter body type e.g. SUV" type="text" class="form-control">
+                                            <input v-model="createForm.make" placeholder="Enter make e.g BMW" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-3">
+                                        <div class="col-md-12">
+                                            <label>Upload Logo</label>
+                                            <input v-on:change="onFileChange($event, 'create')" type="file" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -107,15 +126,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Body Type</h4>
+                        <h4 class="modal-title">Update Make</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body">
-                                <form>
+                                <form enctype="multipart/form-data">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="updateForm.type" placeholder="Enter body type" type="text" class="form-control">
+                                            <input v-model="updateForm.make" placeholder="Enter make" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-3">
+                                        <div class="col-md-12">
+                                            <label>Upload Logo</label>
+                                            <input v-on:change="onFileChange($event, 'update')" placeholder="Logo" type="file" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -144,7 +169,7 @@ import Layout from "../Layout.vue";
 import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
-    name: "BodyType",
+    name: "Make",
     components: {Layout, Link, Head, Bootstrap5Pagination},
     data() {
         return {
@@ -152,16 +177,18 @@ export default {
             filterForm: {
                 sort_by : 'latest',
                 paginate: true,
-                type: undefined,
+                make: undefined,
                 processing: false
             },
             createForm: {
-                type: undefined,
+                make: undefined,
+                logo: undefined,
                 processing: false
             },
             updateForm: {
                 uuid: undefined,
-                type: undefined,
+                make: undefined,
+                logo: undefined,
                 processing: false
             }
         }
@@ -172,7 +199,7 @@ export default {
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('body-types.load', {page: page}), this.filterForm).then(response => {
+            axios.post(route('makes.load', {page: page}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -183,12 +210,23 @@ export default {
         showCreateRecordModal(){
             $('#createRecordModal').modal('show');
         },
+        onFileChange(event, type){
+            if (type === 'create'){
+                this.createForm.logo = event.target.files[0];
+            } else {
+                this.updateForm.logo = event.target.files[0];
+            }
+        },
         createRecord(){
+            let payLoad = new FormData();
+            payLoad.append("make", this.createForm.make || "");
+            payLoad.append("logo", this.createForm.logo || "");
             this.createForm.processing = true;
-            axios.post(route('body-types.store'), this.createForm).then((response) => {
+            axios.post(route('makes.store'), payLoad).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
-                    this.createForm.type = undefined;
+                    this.createForm.make = undefined;
+                    this.createForm.logo = undefined;
                     Swal.fire('Success', response.data.message, 'success');
                     $('#createRecordModal').modal('hide');
                 } else {
@@ -202,15 +240,21 @@ export default {
         },
         showUpdateRecordModal(col){
             this.updateForm.uuid = col.uuid;
-            this.updateForm.type = col.type;
+            this.updateForm.make = col.make;
             $('#updateRecordModal').modal('show');
         },
         updateRecord(){
+            let payLoad = new FormData();
+            payLoad.append("_method", 'put');
+            payLoad.append("make", this.updateForm.make || "");
+            payLoad.append("logo", this.updateForm.logo ? this.updateForm.logo : '');
+
             this.updateForm.processing = true;
-            axios.put(route('body-types.update', { body_type : this.updateForm.uuid}), this.updateForm).then((response) => {
+            axios.post(route('makes.update', { make : this.updateForm.uuid}), payLoad).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
-                    this.updateForm.type = undefined;
+                    this.updateForm.make = undefined;
+                    this.updateForm.logo = undefined;
                     Swal.fire('Success', response.data.message, 'success');
                     $('#updateRecordModal').modal('hide');
                 } else {
@@ -232,7 +276,7 @@ export default {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(route('body-types.destroy', {body_type: col.uuid})).then((response) => {
+                    axios.delete(route('makes.destroy', {make: col.uuid})).then((response) => {
                         if (response.data.status){
                             this.loadPayloadFromApi();
                             Swal.fire('Success', response.data.message, 'success');
@@ -247,7 +291,7 @@ export default {
 
         },
         clearFilter(){
-            this.filterForm.type = undefined;
+            this.filterForm.make = undefined;
             this.loadPayloadFromApi();
         }
     }

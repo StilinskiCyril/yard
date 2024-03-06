@@ -14,4 +14,22 @@ class VehicleCondition extends Model
     protected $guarded = ['id'];
 
     protected $hidden = ['deleted_at', 'updated_at'];
+
+    public function scopeFilter($q){
+        if (!is_null(request('condition')) && !empty(request('condition'))) {
+            $q->where('condition', 'like', '%'.request('condition').'%');
+        }
+        if (!is_null(request('sort_by')) && !empty(request('sort_by'))) {
+            if (request('sort_by') == 'random') {
+                $q->inRandomOrder();
+            }
+            if (request('sort_by') == 'latest') {
+                $q->latest();
+            }
+            if (request('sort_by') == 'oldest') {
+                $q->oldest();
+            }
+        }
+        return $q;
+    }
 }

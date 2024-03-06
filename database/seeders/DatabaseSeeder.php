@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class);
         $this->call(BodyTypeSeeder::class);
         $this->call(DriveSetupSeeder::class);
+        $this->call(DriveTypeSeeder::class);
         $this->call(VehicleConditionSeeder::class);
         $this->call(AdminSeeder::class);
     }

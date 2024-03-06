@@ -14,4 +14,22 @@ class DriveType extends Model
     protected $guarded = ['id'];
 
     protected $hidden = ['deleted_at', 'updated_at'];
+
+    public function scopeFilter($q){
+        if (!is_null(request('type')) && !empty(request('type'))) {
+            $q->where('type', 'like', '%'.request('type').'%');
+        }
+        if (!is_null(request('sort_by')) && !empty(request('sort_by'))) {
+            if (request('sort_by') == 'random') {
+                $q->inRandomOrder();
+            }
+            if (request('sort_by') == 'latest') {
+                $q->latest();
+            }
+            if (request('sort_by') == 'oldest') {
+                $q->oldest();
+            }
+        }
+        return $q;
+    }
 }

@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Body Types" />
+    <Head title="Drive Setups" />
 
     <Layout>
 
@@ -10,11 +10,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-left">Manage Body Types</p>
+                                <p class="text-left">Manage Drive Setup</p>
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-circle-plus"></i>
-                                    Create Body Type
+                                    Create Drive Setup
                                 </button>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                         <form>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter body type">
+                                    <input v-model="filterForm.setup" type="text" class="form-control" placeholder="Enter drive setup">
                                 </div>
                                 <div class="col-md-2">
                                     <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
@@ -40,14 +40,14 @@
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>Body Type</th>
+                                    <th>Drive Setup</th>
                                     <th colspan="2">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="col in payloadFromDb.data" :key="col.uuid">
                                     <td>
-                                        <p>{{ col.type }}</p>
+                                        <p>{{ col.setup }}</p>
                                     </td>
                                     <td>
                                         <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>
@@ -76,7 +76,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create Body Type</h4>
+                        <h4 class="modal-title">Create Drive Setup</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -84,7 +84,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="createForm.type" placeholder="Enter body type e.g. SUV" type="text" class="form-control">
+                                            <input v-model="createForm.setup" placeholder="Enter drive setup e.g Right-Hand Drive" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -107,7 +107,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Body Type</h4>
+                        <h4 class="modal-title">Update Drive Setup</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -115,7 +115,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="updateForm.type" placeholder="Enter body type" type="text" class="form-control">
+                                            <input v-model="updateForm.setup" placeholder="Enter drive setup" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -144,7 +144,7 @@ import Layout from "../Layout.vue";
 import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
-    name: "BodyType",
+    name: "DriveSetup",
     components: {Layout, Link, Head, Bootstrap5Pagination},
     data() {
         return {
@@ -152,16 +152,16 @@ export default {
             filterForm: {
                 sort_by : 'latest',
                 paginate: true,
-                type: undefined,
+                setup: undefined,
                 processing: false
             },
             createForm: {
-                type: undefined,
+                setup: undefined,
                 processing: false
             },
             updateForm: {
                 uuid: undefined,
-                type: undefined,
+                setup: undefined,
                 processing: false
             }
         }
@@ -172,7 +172,7 @@ export default {
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('body-types.load', {page: page}), this.filterForm).then(response => {
+            axios.post(route('drive-setups.load', {page: page}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -185,10 +185,10 @@ export default {
         },
         createRecord(){
             this.createForm.processing = true;
-            axios.post(route('body-types.store'), this.createForm).then((response) => {
+            axios.post(route('drive-setups.store'), this.createForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
-                    this.createForm.type = undefined;
+                    this.createForm.setup = undefined;
                     Swal.fire('Success', response.data.message, 'success');
                     $('#createRecordModal').modal('hide');
                 } else {
@@ -202,15 +202,15 @@ export default {
         },
         showUpdateRecordModal(col){
             this.updateForm.uuid = col.uuid;
-            this.updateForm.type = col.type;
+            this.updateForm.setup = col.setup;
             $('#updateRecordModal').modal('show');
         },
         updateRecord(){
             this.updateForm.processing = true;
-            axios.put(route('body-types.update', { body_type : this.updateForm.uuid}), this.updateForm).then((response) => {
+            axios.put(route('drive-setups.update', { drive_setup : this.updateForm.uuid}), this.updateForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
-                    this.updateForm.type = undefined;
+                    this.updateForm.setup = undefined;
                     Swal.fire('Success', response.data.message, 'success');
                     $('#updateRecordModal').modal('hide');
                 } else {
@@ -232,7 +232,7 @@ export default {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(route('body-types.destroy', {body_type: col.uuid})).then((response) => {
+                    axios.delete(route('drive-setups.destroy', {drive_setup: col.uuid})).then((response) => {
                         if (response.data.status){
                             this.loadPayloadFromApi();
                             Swal.fire('Success', response.data.message, 'success');
@@ -247,7 +247,7 @@ export default {
 
         },
         clearFilter(){
-            this.filterForm.type = undefined;
+            this.filterForm.setup = undefined;
             this.loadPayloadFromApi();
         }
     }

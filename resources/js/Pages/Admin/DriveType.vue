@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Body Types" />
+    <Head title="Drive Types" />
 
     <Layout>
 
@@ -10,11 +10,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-left">Manage Body Types</p>
+                                <p class="text-left">Manage Drive Types</p>
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-circle-plus"></i>
-                                    Create Body Type
+                                    Create Drive Type
                                 </button>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                         <form>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter body type">
+                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter drive type">
                                 </div>
                                 <div class="col-md-2">
                                     <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
@@ -40,7 +40,7 @@
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>Body Type</th>
+                                    <th>Drive Type</th>
                                     <th colspan="2">Action</th>
                                 </tr>
                                 </thead>
@@ -76,7 +76,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create Body Type</h4>
+                        <h4 class="modal-title">Create Drive Type</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -84,7 +84,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="createForm.type" placeholder="Enter body type e.g. SUV" type="text" class="form-control">
+                                            <input v-model="createForm.type" placeholder="Enter drive type e.g. FWD (Front Wheel Drive)" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -107,7 +107,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Body Type</h4>
+                        <h4 class="modal-title">Update Drive Type</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -115,7 +115,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="updateForm.type" placeholder="Enter body type" type="text" class="form-control">
+                                            <input v-model="updateForm.type" placeholder="Enter drive type" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -144,7 +144,7 @@ import Layout from "../Layout.vue";
 import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
-    name: "BodyType",
+    name: "DriveType",
     components: {Layout, Link, Head, Bootstrap5Pagination},
     data() {
         return {
@@ -172,7 +172,7 @@ export default {
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('body-types.load', {page: page}), this.filterForm).then(response => {
+            axios.post(route('drive-types.load', {page: page}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -185,7 +185,7 @@ export default {
         },
         createRecord(){
             this.createForm.processing = true;
-            axios.post(route('body-types.store'), this.createForm).then((response) => {
+            axios.post(route('drive-types.store'), this.createForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
                     this.createForm.type = undefined;
@@ -207,7 +207,7 @@ export default {
         },
         updateRecord(){
             this.updateForm.processing = true;
-            axios.put(route('body-types.update', { body_type : this.updateForm.uuid}), this.updateForm).then((response) => {
+            axios.put(route('drive-types.update', { drive_type : this.updateForm.uuid}), this.updateForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
                     this.updateForm.type = undefined;
@@ -232,7 +232,7 @@ export default {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(route('body-types.destroy', {body_type: col.uuid})).then((response) => {
+                    axios.delete(route('drive-types.destroy', {drive_type: col.uuid})).then((response) => {
                         if (response.data.status){
                             this.loadPayloadFromApi();
                             Swal.fire('Success', response.data.message, 'success');

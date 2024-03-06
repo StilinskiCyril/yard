@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\BodyType;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class BodyTypeController extends Controller
 {
     public function load(Request $request)
     {
-        // Load counties
         if ($request->input('paginate')){
             return BodyType::filter($request)->paginate(50);
         } else {
@@ -18,59 +18,50 @@ class BodyTypeController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Inertia::render('Admin/BodyType');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type' => ['required', 'string', 'max:50', 'unique:body_types']
+        ]);
+
+        BodyType::create([
+            'type' => $request->type
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record created'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(BodyType $bodyType)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BodyType $bodyType)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, BodyType $bodyType)
     {
-        //
+        $request->validate([
+            'type' => ['required', 'string', 'max:50', Rule::unique('body_types')->ignore($bodyType->id)]
+        ]);
+
+        $bodyType->update([
+            'type' => $request->type
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record updated'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(BodyType $bodyType)
     {
-        //
+        $bodyType->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record deleted'
+        ]);
     }
 }
