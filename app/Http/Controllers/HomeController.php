@@ -16,10 +16,15 @@ class HomeController extends Controller
     // Show the application dashboard.
     public function showDashboard(Request $request)
     {
+        $greetings = genGreetings();
         if ($request->user()->hasRole('admin')){
-            return Inertia::render('Admin/Dashboard');
+            return Inertia::render('Admin/Dashboard',[
+                'greetings' => $greetings
+            ]);
         } else {
-            return Inertia::render('Company/Dashboard');
+            return Inertia::render('Company/Dashboard', [
+                'greetings' => $greetings
+            ]);
         }
     }
 

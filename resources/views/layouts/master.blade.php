@@ -12,13 +12,15 @@
 
     <!-- Scripts -->
     @routes
-    @vite(['resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @inertiaHead
 
 </head>
 
 <body>
     @inertia
+    <script src="https://kit.fontawesome.com/2f27e2edbb.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 </body>
 
 </html>

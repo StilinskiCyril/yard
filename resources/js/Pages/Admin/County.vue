@@ -3,43 +3,40 @@
     <Head title="Counties" />
 
     <Layout>
+
         <div class="row">
-            <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 mx-auto">
-                <div class="header">
-                    <h1 class="header-title text-center">
-                        Create County
-                    </h1>
-                </div>
+            <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 mx-auto">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-left">Manage Counties</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i>
+                                    Create County
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form>
                             <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label for="name"><strong>Name</strong></label>
-                                    <input v-model="createForm.name" id="name" type="text" class="form-control">
+                                <div class="col-md-4">
+                                    <input v-model="filterForm.name" type="text" class="form-control" placeholder="Enter county name">
+                                </div>
+                                <div class="col-md-2">
+                                    <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
+                                        Processing...
+                                    </button>
+                                    <button v-else @click.prevent="loadPayloadFromApi()" class="btn btn-outline-primary w-100"><i class="fas fa-search"></i> Search</button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button v-on:click.prevent="clearFilter()" class="btn btn-outline-primary w-100"><i class="fas fa-brush"></i> Clear Filter</button>
                                 </div>
                             </div>
-                            <button v-if="createForm.processing" class="btn btn-warning btn-block" type="button" disabled>
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                Processing...
-                            </button>
-                            <button v-else @click.prevent="createRecord()" type="button" class="btn btn-primary btn-block">Save</button>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
-                <div class="header">
-                    <h1>
-                        Counties
-                    </h1>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive mt-3">
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
@@ -53,10 +50,10 @@
                                         <p>{{ col.name }}</p>
                                     </td>
                                     <td>
-                                        <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> update</button>
+                                        <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> delete</button>
+                                        <button @click.prevent="deleteRecord(col)" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i> delete</button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -65,6 +62,37 @@
                     </div>
                     <div class="card-footer">
                         <Bootstrap5Pagination @limit=20 :data="payloadFromDb" @pagination-change-page="loadPayloadFromApi"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Record Modal -->
+        <div class="modal fade" id="createRecordModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create County</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input v-model="createForm.name" placeholder="Enter county name" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nevermind</button>
+                        <button v-if="!createForm.processing" @click.prevent="createRecord()" class="btn btn-primary">Confirm</button>
+                        <button v-else type="button" class="btn btn-secondary spinner spinner-dark spinner-right">
+                            Processing...
+                        </button>
                     </div>
                 </div>
             </div>
@@ -83,16 +111,17 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <label for="name"><strong>Name</strong></label>
-                                            <input v-model="updateForm.name" id="name" type="text" class="form-control">
+                                            <input v-model="updateForm.name" placeholder="Enter county name" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <button v-if="updateForm.processing" class="btn btn-warning btn-block" type="button" disabled>
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                        Processing...
-                                    </button>
-                                    <button v-else @click.prevent="updateRecord()" type="button" class="btn btn-primary btn-block">Save</button>
                                 </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nevermind</button>
+                                <button v-if="!updateForm.processing" @click.prevent="updateRecord()" class="btn btn-primary">Confirm</button>
+                                <button v-else type="button" class="btn btn-secondary spinner spinner-dark spinner-right">
+                                    Processing...
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -107,14 +136,21 @@
 import {Link, Head} from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import { Bootstrap5Pagination } from 'laravel-vue-pagination';
-import Layout from "@/Pages/Layout.vue";
+import Layout from "../Layout.vue";
+import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
     name: "County",
-    components: {Layout, Link, Head, Bootstrap5Pagination},
+    components: {Layout, Link, Head, Bootstrap5Pagination, axiosErrorHandler},
     data() {
         return {
             payloadFromDb: {},
+            filterForm: {
+                sort_by : 'latest',
+                paginate: true,
+                name: undefined,
+                processing: false
+            },
             createForm: {
                 name: undefined,
                 processing: false
@@ -131,75 +167,84 @@ export default {
     },
     methods: {
         loadPayloadFromApi(page = 1){
-            const payLoad = {
-                sort_by : 'latest'
-            };
-            this.createForm.processing = true;
-            axios.post(route('counties.load', {'page': page}), payLoad).then(response => {
-                this.counties = response.data;
+            this.filterForm.processing = true;
+            axios.post(route('counties.load', {'page': page}), this.filterForm).then(response => {
+                this.payloadFromDb = response.data;
             }).catch(error => {
                 //
             }).finally(() => {
-                this.createForm.processing = false;
+                this.filterForm.processing = false;
             });
+        },
+        showCreateRecordModal(){
+            $('#createRecordModal').modal('show');
         },
         createRecord(){
             this.createForm.processing = true;
             axios.post(route('counties.store'), this.createForm).then((response) => {
-                this.createForm.name = undefined;
-                Swal.fire('Success!', response.data.message, 'success');
-                this.loadPayloadFromApi();
-            }).catch((error) => {
-                if (error.response && error.response.status === 422) {
-                    const errorData = error.response.data;
-                    if (errorData.errors) {
-                        const errorMessages = Object.values(errorData.errors).flat().map(errorMessage => errorMessage.replace(/\.$/, "")).join(", ");
-                        Swal.fire({title: 'Failed!', text: errorMessages, icon: 'error'});
-                    } else if (errorData.message) {
-                        Swal.fire({title: 'Failed!', text: errorData.message, icon: 'error'});
-                    } else {
-                        Swal.fire({title: 'Failed!', text: 'An unknown error occurred.', icon: 'error'});
-                    }
+                if (response.data.status){
+                    this.loadPayloadFromApi();
+                    this.createForm.name = undefined;
+                    Swal.fire('Success', response.data.message, 'success');
+                    $('#createRecordModal').modal('hide');
                 } else {
-                    Swal.fire({title: 'Failed!', text: error.message, icon: 'error'});
+                    Swal.fire('Failed', response.data.message, 'warning');
                 }
+            }).catch((error) => {
+                axiosErrorHandler(error);
             }).finally(() => {
                 this.createForm.processing = false;
             });
         },
-        showUpdateRecordModal(record){
-            this.updateForm.propertyUuid = record.uuid;
-            this.updateForm.name = record.name;
+        showUpdateRecordModal(col){
+            this.updateForm.countyUuid = col.uuid;
+            this.updateForm.name = col.name;
             $('#updateRecordModal').modal('show');
         },
         updateRecord(){
             this.updateForm.processing = true;
-            axios.put(route('counties.update', this.updateForm.uuid), this.updateForm).then((response) => {
+            axios.put(route('counties.update', { county : this.updateForm.countyUuid}), this.updateForm).then((response) => {
                 if (response.data.status){
+                    this.loadPayloadFromApi();
                     this.updateForm.name = undefined;
-                    Swal.fire('Success!', response.data.message, 'success');
+                    Swal.fire('Success', response.data.message, 'success');
                     $('#updateRecordModal').modal('hide');
                 } else {
-                    Swal.fire('Error!', response.data.message, 'warning');
+                    Swal.fire('Failed', response.data.message, 'warning');
                 }
-                this.loadPayloadFromApi();
             }).catch((error) => {
-                if (error.response && error.response.status === 422) {
-                    const errorData = error.response.data;
-                    if (errorData.errors) {
-                        const errorMessages = Object.values(errorData.errors).flat().map(errorMessage => errorMessage.replace(/\.$/, "")).join(", ");
-                        Swal.fire({title: 'Failed!', text: errorMessages, icon: 'error'});
-                    } else if (errorData.message) {
-                        Swal.fire({title: 'Failed!', text: errorData.message, icon: 'error'});
-                    } else {
-                        Swal.fire({title: 'Failed!', text: 'An unknown error occurred.', icon: 'error'});
-                    }
-                } else {
-                    Swal.fire({title: 'Failed!', text: error.message, icon: 'error'});
-                }
+                axiosErrorHandler(error);
             }).finally(() => {
                 this.updateForm.processing = false;
             });
+        },
+        deleteRecord(col){
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(route('counties.destroy', {county: col.uuid})).then((response) => {
+                        if (response.data.status){
+                            this.loadPayloadFromApi();
+                            Swal.fire('Success', response.data.message, 'success');
+                        } else {
+                            Swal.fire('Failed', response.data.message, 'warning');
+                        }
+                    }).catch((error) => {
+                        axiosErrorHandler(error);
+                    });
+                }
+            });
+
+        },
+        clearFilter(){
+            this.filterForm.name = undefined;
+            this.loadPayloadFromApi();
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\County;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class CountyController extends Controller
@@ -18,59 +19,51 @@ class CountyController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Inertia::render('Admin/County');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:50', 'unique:counties']
+        ]);
+
+        County::create([
+            'name' => $request->name
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record created'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(County $county)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(County $county)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, County $county)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:50', Rule::unique('counties')->ignore($county->id)]
+        ]);
+
+        $county->update([
+            'name' => $request->name
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record updated'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(County $county)
     {
-        //
+        $county->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record deleted'
+        ]);
     }
 }

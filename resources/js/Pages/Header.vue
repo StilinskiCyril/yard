@@ -8,35 +8,71 @@ export default {
 </script>
 
 <template>
-    <nav class="navbar navbar-expand navbar-theme">
-        <a class="sidebar-toggle d-flex mr-2">
-            <i class="hamburger align-self-center"></i>
-        </a>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <Link class="nav-link" :href="route('home.show-dashboard')">Dashboard</Link>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Company</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Company Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Company Users</a></li>
+                            <li><a class="dropdown-item" href="#">Company Wallet</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Manage Vehicles</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Customer Support</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Inquiries</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Account Settings</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Authentication</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Administration</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Companies</a></li>
+                            <li><a class="dropdown-item" href="#">Vehicles</a></li>
+                            <li><a class="dropdown-item" href="#">Users</a></li>
+                            <li><a class="dropdown-item" href="#">Payments</a></li>
+                            <li><a class="dropdown-item" href="#">Custom Settings</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">App Metadata</a>
+                        <ul class="dropdown-menu">
+                            <li><Link class="dropdown-item" :href="route('counties.index')">Counties</Link></li>
+                            <li><a class="dropdown-item" href="#">Body Types</a></li>
+                            <li><a class="dropdown-item" href="#">Drive Setups</a></li>
+                            <li><a class="dropdown-item" href="#">Drive Types</a></li>
+                            <li><a class="dropdown-item" href="#">Makes & Models</a></li>
+                            <li><a class="dropdown-item" href="#">Transmission Types</a></li>
+                            <li><a class="dropdown-item" href="#">Vehicle Conditions</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-        <form class="form-inline d-none d-sm-inline-block" action="javascript: void(0);" method="get">
-            <input class="form-control form-control-lite" type="text" placeholder="Search vehicles...">
-        </form>
-
-        <div class="navbar-collapse collapse">
-            <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle position-relative" href="#">
-                        <i class="align-middle fas fa-bell"></i>
-                        <span class="indicator"></span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown ms-lg-2">
-                    <a class="nav-link dropdown-toggle position-relative" href="#" id="userDropdown" data-toggle="dropdown">
-                        <i class="align-middle fas fa-cog"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" :href="route('home.logout')"><i class="align-middle mr-1 fas fa-fw fa-arrow-alt-circle-right"></i> Log out</a>
-                    </div>
-                </li>
-            </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" :href="route('home.logout')">Logout ({{ $page.props.userName}})</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-
     </nav>
 
 </template>
