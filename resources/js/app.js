@@ -7,7 +7,6 @@ import { Ziggy } from './ziggy.js';
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
-
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -24,6 +23,10 @@ createInertiaApp({
             .mount(el)
     },
     progress: {
-        color: '#4B5563',
+        color: '#AAFF00',
     },
 });
+
+// router.on('navigate', (event) => {
+//     console.log(`Navigated to ${event.detail.page.url}`)
+// });

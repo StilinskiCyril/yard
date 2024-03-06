@@ -31,7 +31,7 @@ export default {
                         <i class="align-middle fas fa-cog"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <Link class="dropdown-item" :href="route('home.logout')"><i class="align-middle mr-1 fas fa-fw fa-arrow-alt-circle-right"></i> Log out</Link>
+                        <a class="dropdown-item" :href="route('home.logout')"><i class="align-middle mr-1 fas fa-fw fa-arrow-alt-circle-right"></i> Log out</a>
                     </div>
                 </li>
             </ul>

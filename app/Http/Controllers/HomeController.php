@@ -29,7 +29,7 @@ class HomeController extends Controller
         $request->validate([
             'company_name' => ['required', 'string', 'max:50', 'unique:companies,name'],
             'company_msisdn' => ['required', 'string', new ValidateMsisdn(true, 'Company', 'KE', false, 'msisdn', 'company_msisdn')],
-            'company_email' => ['required', 'email', 'unique:companies,email'],
+            'company_email' => ['required', 'email', 'max:50', 'unique:companies,email'],
             'no_of_employees' => ['required', 'numeric'],
             'address' => ['required', 'string', 'max:50']
         ]);

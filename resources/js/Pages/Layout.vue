@@ -12,10 +12,6 @@ export default {
 </script>
 
 <template>
-    <div class="splash active">
-        <div class="splash-icon"></div>
-    </div>
-
     <div class="wrapper">
         <LeftSideBar></LeftSideBar>
         <div class="main">
