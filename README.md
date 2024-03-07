@@ -20,6 +20,7 @@ Car selling and buying
 - run `php artisan key:generate` to generate the application key
 - run `php artisan:migrate` to create the tables
 - run `php db:seed` to seed the database
+- run `php artisan storage:link` to create a symbolic link to the storage directory
 - serve the app
 - run `npm install` to install the frontend dependencies
 - login using the following credentials
