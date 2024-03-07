@@ -13,8 +13,8 @@
                                 <p class="text-left">{{ company.name }}'s Wallet Transaction History</p>
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-credit-card"></i>
-                                    Top Up With Wallet Mpesa
+                                <button @click.prevent="showTopUpWalletModal()" class="btn btn-primary btn-sm"><i class="fas fa-credit-card"></i>
+                                    Top Up Wallet
                                 </button>
                             </div>
                         </div>
@@ -22,8 +22,14 @@
                     <div class="card-body">
                         <form>
                             <div class="form-group row">
-                                <div class="col-md-4">
-                                    <input v-model="filterForm.name" type="text" class="form-control" placeholder="Enter county name">
+                                <div class="col-md-2">
+                                    <input v-model="filterForm.keyword" type="text" class="form-control" placeholder="Enter keyword e.g. account number, msisdn, name">
+                                </div>
+                                <div class="col-md-2">
+                                    <input v-model="filterForm.start" type="date" class="form-control" placeholder="Start">
+                                </div>
+                                <div class="col-md-2">
+                                    <input v-model="filterForm.end" type="date" class="form-control" placeholder="End">
                                 </div>
                                 <div class="col-md-2">
                                     <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
@@ -40,20 +46,25 @@
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>County Name</th>
-                                    <th colspan="2">Action</th>
+                                    <th>Amount (KES)</th>
+                                    <th>Type</th>
+                                    <th>Notes</th>
+                                    <th>Date</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="col in payloadFromDb.data" :key="col.uuid">
                                     <td>
-                                        <p>{{ col.name }}</p>
+                                        <p>{{ col.amount }}</p>
                                     </td>
                                     <td>
-                                        <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>
+                                        <p>{{ col.type }}</p>
                                     </td>
                                     <td>
-                                        <button @click.prevent="deleteRecord(col)" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i> delete</button>
+                                        <p>{{ col.notes }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ col.created_at }}</p>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -71,67 +82,100 @@
             </div>
         </div>
 
-        <!-- Create Record Modal -->
-        <div class="modal fade" id="createRecordModal">
-            <div class="modal-dialog">
+        <!-- Top Up Wallet Modal -->
+        <div class="modal fade" id="topUpWalletModal">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create County</h4>
+                        <h4 class="modal-title">Top Up Wallet</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body">
-                                <form>
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <input v-model="createForm.name" placeholder="Enter county name" type="text" class="form-control">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Top Up Via M-pesa
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="card-title text-center">
+                                                    <img :src="`/images/mpesa.png`" alt="M-pesa logo" height="120" width="200">
+                                                </div>
+                                                <form>
+                                                    <div class="form-group row">
+                                                        <div class="col-md-12">
+                                                            <input v-model="topUpWalletForm.msisdn" placeholder="Enter msisdn/ phone number" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row mt-3">
+                                                        <div class="col-md-12">
+                                                            <input v-model="topUpWalletForm.amount" placeholder="Enter amount (KES)" type="number" min="1" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row mt-3">
+                                                        <div class="col-md-12">
+                                                            <button v-if="!topUpWalletForm.processing" @click.prevent="topUpViaMpesa()" class="btn btn-primary w-100">Top Up</button>
+                                                            <button v-else type="button" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
+                                                                Processing...
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </form>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                How To Top Up Directly From M-pesa Menu
+                                            </div>
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li>Go to M-pesa menu</li>
+                                                    <li>Lipa na M-pesa</li>
+                                                    <li>Paybill</li>
+                                                    <li>Enter business number: XXXXXX</li>
+                                                    <li>Enter account number: {{ company.account_no }}</li>
+                                                    <li>Enter amount</li>
+                                                    <li>Enter PIN</li>
+                                                    <li>Confirm</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                How To Top Up From Bank
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="card-title text-center">
+                                                    <img :src="`/images/ncba.png`" alt="M-pesa logo" height="70" width="200">
+                                                </div>
+                                                <div class="auto-buzz-note p-3">
+                                                    <p>We accept bank deposits & cheque payments using the following NCBA Bank (KE) account.</p>
+                                                    <ul>
+                                                        <li>Bank Name: NCBA</li>
+                                                        <li>Account Name: AutoBuzz</li>
+                                                        <li>Branch: XXXXXX</li>
+                                                        <li >Account Number: XXXXXX</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nevermind</button>
-                        <button v-if="!createForm.processing" @click.prevent="createRecord()" class="btn btn-primary">Confirm</button>
-                        <button v-else type="button" class="btn btn-secondary spinner spinner-dark spinner-right">
-                            Processing...
-                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Update Record Modal -->
-        <div class="modal fade" id="updateRecordModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Update County</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card">
-                            <div class="card-body">
-                                <form>
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <input v-model="updateForm.name" placeholder="Enter county name" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nevermind</button>
-                                <button v-if="!updateForm.processing" @click.prevent="updateRecord()" class="btn btn-primary">Confirm</button>
-                                <button v-else type="button" class="btn btn-secondary spinner spinner-dark spinner-right">
-                                    Processing...
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </Layout>
 
 </template>
@@ -153,27 +197,26 @@ export default {
             filterForm: {
                 sort_by : 'latest',
                 paginate: true,
-                name: undefined,
+                keyword: undefined,
+                start: undefined,
+                end: undefined,
                 processing: false
             },
-            createForm: {
-                name: undefined,
-                processing: false
-            },
-            updateForm: {
-                uuid: undefined,
-                name: undefined,
+            topUpWalletForm: {
+                msisdn: undefined,
+                amount: undefined,
                 processing: false
             }
         }
     },
     mounted() {
         this.loadPayloadFromApi();
+        this.topUpWalletForm.msisdn = this.company.msisdn;
     },
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('counties.load', {page: page}), this.filterForm).then(response => {
+            axios.post(route('companies.load-wallet-transactions', {page: page, company: this.company.uuid}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -181,74 +224,14 @@ export default {
                 this.filterForm.processing = false;
             });
         },
-        showCreateRecordModal(){
-            $('#createRecordModal').modal('show');
+        showTopUpWalletModal(){
+            $('#topUpWalletModal').modal('show');
         },
-        createRecord(){
-            this.createForm.processing = true;
-            axios.post(route('counties.store'), this.createForm).then((response) => {
-                if (response.data.status){
-                    this.loadPayloadFromApi();
-                    this.createForm.name = undefined;
-                    Swal.fire('Success', response.data.message, 'success');
-                    $('#createRecordModal').modal('hide');
-                } else {
-                    Swal.fire('Failed', response.data.message, 'warning');
-                }
-            }).catch((error) => {
-                axiosErrorHandler(error);
-            }).finally(() => {
-                this.createForm.processing = false;
-            });
-        },
-        showUpdateRecordModal(col){
-            this.updateForm.uuid = col.uuid;
-            this.updateForm.name = col.name;
-            $('#updateRecordModal').modal('show');
-        },
-        updateRecord(){
-            this.updateForm.processing = true;
-            axios.put(route('counties.update', { county : this.updateForm.uuid}), this.updateForm).then((response) => {
-                if (response.data.status){
-                    this.loadPayloadFromApi();
-                    this.updateForm.name = undefined;
-                    Swal.fire('Success', response.data.message, 'success');
-                    $('#updateRecordModal').modal('hide');
-                } else {
-                    Swal.fire('Failed', response.data.message, 'warning');
-                }
-            }).catch((error) => {
-                axiosErrorHandler(error);
-            }).finally(() => {
-                this.updateForm.processing = false;
-            });
-        },
-        deleteRecord(col){
-            Swal.fire({
-                title: 'Are you sure?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(route('counties.destroy', {county: col.uuid})).then((response) => {
-                        if (response.data.status){
-                            this.loadPayloadFromApi();
-                            Swal.fire('Success', response.data.message, 'success');
-                        } else {
-                            Swal.fire('Failed', response.data.message, 'warning');
-                        }
-                    }).catch((error) => {
-                        axiosErrorHandler(error);
-                    });
-                }
-            });
-
+        topUpViaMpesa(){
+            Swal.fire('Info', 'Coming soon...', 'warning');
         },
         clearFilter(){
-            this.filterForm.name = undefined;
+            this.filterForm.keyword = undefined;
             this.loadPayloadFromApi();
         }
     }
@@ -256,5 +239,9 @@ export default {
 </script>
 
 <style scoped>
-
+.auto-buzz-note {
+    border-left: 6px solid #4CAF50;
+    background-color: #FAFAFA;
+    color: #616161;
+}
 </style>

@@ -73,6 +73,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('users/{company}/{user}/remove', [CompanyController::class, 'removeUser'])->name('companies.remove-user');
         // Show wallet
         Route::get('wallet', [CompanyController::class, 'showWallet'])->name('companies.show-wallet');
+        // Load wallet transactions
+        Route::post('wallet/{company}/transactions', [CompanyController::class, 'loadWalletTransactions'])->name('companies.load-wallet-transactions');
     });
 
     // Customer support routes

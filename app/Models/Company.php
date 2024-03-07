@@ -69,4 +69,9 @@ class Company extends Model
     {
         return $this->hasMany(CompanyUser::class, 'company_id', 'id');
     }
+
+    public function walletTransactions()
+    {
+        return $this->hasMany(WalletTransaction::class, 'company_id', 'id');
+    }
 }

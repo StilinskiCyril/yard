@@ -256,6 +256,12 @@ class CompanyController extends Controller
         ]);
     }
 
+    // Load wallet transactions
+    public function loadWalletTransactions(Request $request, Company $company)
+    {
+        return $company->walletTransactions()->filter($request)->paginate(50);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
