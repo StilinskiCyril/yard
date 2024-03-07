@@ -180,7 +180,7 @@ class CompanyController extends Controller
                 'email' => $request->email,
                 'company_position' => $request->companyPosition,
                 'two_factor_auth' => (bool)$request->twoFactorAuth,
-                'password' => Hash::make($request->input('password'))
+                'password' => Hash::make($request->password)
             ]);
 
             // Assign role

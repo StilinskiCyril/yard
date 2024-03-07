@@ -33,7 +33,13 @@ class User extends Authenticatable
 
     public function scopeFilter($q){
         if (!is_null(request('name')) && !empty(request('name'))) {
-            $q->where('name', request('name'));
+            $q->where('name', 'like', '%'.request('name').'%');
+        }
+        if (!is_null(request('msisdn')) && !empty(request('msisdn'))) {
+            $q->where('msisdn', request('msisdn'));
+        }
+        if (!is_null(request('email')) && !empty(request('email'))) {
+            $q->where('email', request('email'));
         }
         if (!is_null(request('sort_by')) && !empty(request('sort_by'))) {
             if (request('sort_by') == 'random') {
