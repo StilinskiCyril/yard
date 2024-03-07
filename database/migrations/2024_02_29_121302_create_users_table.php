@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('company_position')->nullable(1); // CEO, HR, etc
             $table->integer('status')->default(1); // 0: inactive, 1: active, 2:suspended
             $table->boolean('two_factor_auth')->default(false);
+            $table->foreignId('company_id')->nullable()->constrained();
             $table->string('password');
             $table->softDeletes();
             $table->rememberToken();

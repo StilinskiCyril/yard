@@ -21,21 +21,22 @@ class AdminSeeder extends Seeder
     {
         $existingAdmin = User::where('msisdn', '254705799644')->first();
         if(!$existingAdmin){
-            $admin = User::create([
-                'name' => 'Cyril Aguvasu',
-                'msisdn' => '254705799644',
-                'msisdn_verified_at' => now(),
-                'email' => 'aguvasucyril@gmail.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('aguvasucyril@gmail.com')
-            ]);
-
             $company = Company::create([
                 'name' => "StilinskiYard",
                 'msisdn' => '254705799644',
                 'email' => 'aguvasucyril@gmail.com',
                 'no_of_employees' => 20,
                 'address' => 'Lower Kabete, Nairobi, Kenya',
+            ]);
+
+            $admin = User::create([
+                'company_id' => $company->id,
+                'name' => 'Cyril Aguvasu',
+                'msisdn' => '254705799644',
+                'msisdn_verified_at' => now(),
+                'email' => 'aguvasucyril@gmail.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('aguvasucyril@gmail.com')
             ]);
 
             // Assign company to admin

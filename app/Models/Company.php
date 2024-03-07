@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Company extends Model
@@ -15,6 +16,18 @@ class Company extends Model
 
     protected $hidden = ['id', 'deleted_at', 'updated_at'];
 
+    protected $appends = ['formatted_logo_url', 'formatted_kyc_doc_url'];
+
+    public function getFormattedLogoUrlAttribute()
+    {
+        return !is_null($this->logo_url) ? Storage::url($this->logo_url) : '/images/404.png';
+    }
+
+    public function getFormattedKycDocUrlAttribute()
+    {
+        return !is_null($this->kyc_doc_url) ? Storage::url($this->kyc_doc_url) : '/images/404.png';
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -22,6 +35,11 @@ class Company extends Model
             $model->uuid = Str::orderedUuid()->toString();
             $model->account_no = 'C0-'.genRandInt(8);
         });
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
     }
 
     public function scopeFilter($q){

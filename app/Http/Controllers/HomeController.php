@@ -107,6 +107,7 @@ class HomeController extends Controller
         ]);
 
         $companyRep = User::create([
+            'company_id' => $company->id,
             'name' => $request->input('name'),
             'msisdn' => $request->input('msisdn'),
             'email' => $request->input('email'),

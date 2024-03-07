@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BodyTypeController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CountyController;
 use App\Http\Controllers\DriveSetupController;
 use App\Http\Controllers\DriveTypeController;
@@ -52,9 +53,23 @@ Route::middleware(['auth:web'])->group(function () {
     // Logout
     Route::get('logout', [LoginController::class, 'logout'])->name('home.logout');
 
+    // Company admin routes
+    Route::prefix('companies')->middleware(['role:admin|company-admin'])->group(function () {
+        // Show company profile
+        Route::get('profile', [CompanyController::class, 'showProfile'])->name('companies.show-profile');
+        // Load company profile
+        Route::post('profile/{company}', [CompanyController::class, 'loadProfile'])->name('companies.load-profile');
+        // Update company profile
+        Route::put('profile/{company}/update', [CompanyController::class, 'updateProfile'])->name('companies.update-profile');
+    });
+
+    // Customer support routes
+    Route::prefix('customer-support')->middleware(['role:admin|customer-support'])->group(function () {
+        Route::post('companies/load', [CompanyController::class, 'load'])->name('companies.load');
+    });
 
     // Admin routes
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware(['role:admin'])->group(function () {
 
         // App metadata
         Route::prefix('app-metadata')->group(function () {
@@ -66,7 +81,7 @@ Route::middleware(['auth:web'])->group(function () {
                 'transmission-types' => TransmissionTypeController::class,
                 'vehicle-conditions' => VehicleConditionController::class,
                 'makes' => MakeController::class,
-                'make-models' => MakeModelController::class,
+                'make-models' => MakeModelController::class
             ]);
         });
     });

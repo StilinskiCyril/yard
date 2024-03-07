@@ -19,18 +19,19 @@ export default {
                     <li class="nav-item">
                         <Link class="nav-link" :href="route('home.show-dashboard')">Dashboard</Link>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin') || $page.props.roles.includes('company-admin')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Company</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Company Profile</a></li>
+                            <li><Link class="dropdown-item" :href="route('companies.show-profile')">Company Profile</Link></li>
                             <li><a class="dropdown-item" href="#">Company Users</a></li>
+                            <li><a class="dropdown-item" href="#">Company Payments</a></li>
                             <li><a class="dropdown-item" href="#">Company Wallet</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Manage Vehicles</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin') || $page.props.roles.includes('customer-support')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Customer Support</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Inquiries</a></li>
@@ -42,7 +43,7 @@ export default {
                             <li><a class="dropdown-item" href="#">Authentication</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Administration</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Companies</a></li>
@@ -52,7 +53,7 @@ export default {
                             <li><a class="dropdown-item" href="#">Custom Settings</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">App Metadata</a>
                         <ul class="dropdown-menu">
                             <li><Link class="dropdown-item" :href="route('body-types.index')">Body Types</Link></li>
@@ -65,10 +66,9 @@ export default {
                         </ul>
                     </li>
                 </ul>
-
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" :href="route('home.logout')">Logout ({{ $page.props.userName}})</a>
+                        <a class="nav-link" :href="route('home.logout')">Logout ({{ $page.props.userName }})</a>
                     </li>
                 </ul>
             </div>
