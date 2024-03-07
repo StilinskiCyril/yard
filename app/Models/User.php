@@ -23,7 +23,7 @@ class User extends Authenticatable
         'deleted_at',
         'updated_at',
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     protected $casts = [
@@ -47,5 +47,10 @@ class User extends Authenticatable
             }
         }
         return $q;
+    }
+
+    public function companyUsers()
+    {
+        return $this->hasMany(CompanyUser::class, 'user_id', 'id');
     }
 }

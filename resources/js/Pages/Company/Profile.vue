@@ -1,6 +1,6 @@
 <template>
 
-    <Head :title="`${company.name} Profile`" />
+    <Head :title="`${updateForm.name} Profile`" />
 
     <Layout>
 
@@ -41,7 +41,7 @@
                                                     <th>Account Status</th>
                                                     <td>
                                                         <p v-if="updateForm.status === 0" class="text-warning">Inactive</p>
-                                                        <p v-if="updateForm.status === 1" class="text-success">Active</p>
+                                                        <p v-else-if="updateForm.status === 1" class="text-success">Active</p>
                                                         <p v-else class="text-warning">Suspended</p>
                                                     </td>
                                                 </tr>

@@ -55,12 +55,22 @@ Route::middleware(['auth:web'])->group(function () {
 
     // Company admin routes
     Route::prefix('companies')->middleware(['role:admin|company-admin'])->group(function () {
-        // Show company profile
+        // Show profile
         Route::get('profile', [CompanyController::class, 'showProfile'])->name('companies.show-profile');
-        // Load company profile
+        // Load profile
         Route::post('profile/{company}', [CompanyController::class, 'loadProfile'])->name('companies.load-profile');
-        // Update company profile
+        // Update profile
         Route::put('profile/{company}/update', [CompanyController::class, 'updateProfile'])->name('companies.update-profile');
+        // Show users
+        Route::get('users', [CompanyController::class, 'showUsers'])->name('companies.show-users');
+        // Load users
+        Route::post('users/{company}', [CompanyController::class, 'loadUsers'])->name('companies.load-users');
+        // Create user
+        Route::post('users/{company}/create', [CompanyController::class, 'createUser'])->name('companies.create-user');
+        // Update user
+        Route::put('users/{user}/update', [CompanyController::class, 'updateUser'])->name('companies.update-user');
+        // Remove
+        Route::delete('users/{company}/{user}/remove', [CompanyController::class, 'removeUser'])->name('companies.remove-user');
     });
 
     // Customer support routes

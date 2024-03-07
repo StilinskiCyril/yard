@@ -23,7 +23,7 @@ export default {
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Company</a>
                         <ul class="dropdown-menu">
                             <li><Link class="dropdown-item" :href="route('companies.show-profile')">Company Profile</Link></li>
-                            <li><a class="dropdown-item" href="#">Company Users</a></li>
+                            <li><Link class="dropdown-item" :href="route('companies.show-users')">Company Users</Link></li>
                             <li><a class="dropdown-item" href="#">Company Payments</a></li>
                             <li><a class="dropdown-item" href="#">Company Wallet</a></li>
                         </ul>
@@ -50,7 +50,7 @@ export default {
                             <li><a class="dropdown-item" href="#">Vehicles</a></li>
                             <li><a class="dropdown-item" href="#">Users</a></li>
                             <li><a class="dropdown-item" href="#">Payments</a></li>
-                            <li><a class="dropdown-item" href="#">Custom Settings</a></li>
+                            <li><a class="dropdown-item" href="#">App Settings</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin')">
