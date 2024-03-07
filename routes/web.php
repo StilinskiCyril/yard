@@ -71,6 +71,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::put('users/{user}/update', [CompanyController::class, 'updateUser'])->name('companies.update-user');
         // Remove
         Route::delete('users/{company}/{user}/remove', [CompanyController::class, 'removeUser'])->name('companies.remove-user');
+        // Show wallet
+        Route::get('wallet', [CompanyController::class, 'showWallet'])->name('companies.show-wallet');
     });
 
     // Customer support routes

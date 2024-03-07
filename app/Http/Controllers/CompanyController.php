@@ -243,6 +243,19 @@ class CompanyController extends Controller
         ]);
     }
 
+    // Show profile
+    public function showWallet(Request $request)
+    {
+        $company = Company::where('id', $request->user()->company_id)->first();
+        if (!$company){
+            session()->flash('error', 'Company not found');
+            return redirect()->back();
+        }
+        return Inertia::render('Company/Wallet', [
+            'company' => $company
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

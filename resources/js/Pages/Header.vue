@@ -25,7 +25,7 @@ export default {
                             <li><Link class="dropdown-item" :href="route('companies.show-profile')">Company Profile</Link></li>
                             <li><Link class="dropdown-item" :href="route('companies.show-users')">Company Users</Link></li>
                             <li><a class="dropdown-item" href="#">Company Payments</a></li>
-                            <li><a class="dropdown-item" href="#">Company Wallet</a></li>
+                            <li><Link class="dropdown-item" :href="route('companies.show-wallet')">Company Wallet</Link></li>
                         </ul>
                     </li>
                     <li class="nav-item">

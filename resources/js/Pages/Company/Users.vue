@@ -78,7 +78,7 @@
                                         <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-outline-primary btn-sm"><i class="fas fa-user-shield"></i> roles</button>
+                                        <button @click.prevent="showManageRolesModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-shield"></i> roles</button>
                                     </td>
                                     <td>
                                         <button @click.prevent="removeFromCompany(col)" class="btn btn-outline-danger btn-sm"><i class="fas fa-ban"></i> remove</button>
@@ -338,6 +338,9 @@ export default {
             }).finally(() => {
                 this.updateForm.processing = false;
             });
+        },
+        showManageRolesModal(col){
+            Swal.fire('Under Development', 'This feature is under development', 'info');
         },
         removeFromCompany(col){
             Swal.fire({
