@@ -340,7 +340,7 @@ export default {
             });
         },
         showManageRolesModal(col){
-            Swal.fire('Under Development', 'This feature is under development', 'info');
+            Swal.fire('Info', 'Coming soon...', 'info');
         },
         removeFromCompany(col){
             Swal.fire({
