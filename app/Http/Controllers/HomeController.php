@@ -21,8 +21,16 @@ class HomeController extends Controller
             return Inertia::render('Admin/Dashboard',[
                 'greetings' => $greetings
             ]);
+        } elseif($request->user()->hasRole('company-admin')) {
+            return Inertia::render('CompanyAdmin/Dashboard', [
+                'greetings' => $greetings
+            ]);
+        } elseif($request->user()->hasRole('company-user')) {
+            return Inertia::render('CompanyUser/Dashboard', [
+                'greetings' => $greetings
+            ]);
         } else {
-            return Inertia::render('Company/Dashboard', [
+            return Inertia::render('CustomerSupport/Dashboard', [
                 'greetings' => $greetings
             ]);
         }

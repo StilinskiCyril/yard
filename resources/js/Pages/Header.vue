@@ -50,7 +50,6 @@ export default {
                             <li><a class="dropdown-item" href="#">Users</a></li>
                             <li><a class="dropdown-item" href="#">Payments</a></li>
                             <li><a class="dropdown-item" href="#">Transactions</a></li>
-                            <li><a class="dropdown-item" href="#">App Settings</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin')">
@@ -65,6 +64,7 @@ export default {
                             <li><Link class="dropdown-item" :href="route('vehicle-conditions.index')">Vehicle Conditions</Link></li>
                             <li><Link class="dropdown-item" :href="route('counties.index')">Counties</Link></li>
                             <li><Link class="dropdown-item" :href="route('currencies.index')">Currencies</Link></li>
+                            <li><Link class="dropdown-item" :href="route('settings.index')">App Settings</Link></li>
                         </ul>
                     </li>
                 </ul>

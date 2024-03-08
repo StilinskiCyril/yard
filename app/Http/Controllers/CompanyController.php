@@ -32,7 +32,7 @@ class CompanyController extends Controller
             session()->flash('error', 'Company not found');
             return redirect()->back();
         }
-        return Inertia::render('Company/Profile', [
+        return Inertia::render('CompanyAdmin/Profile', [
             'company' => $company,
             'counties' => County::all()
         ]);
@@ -104,7 +104,7 @@ class CompanyController extends Controller
             session()->flash('error', 'Company not found');
             return redirect()->back();
         }
-        return Inertia::render('Company/Users', [
+        return Inertia::render('CompanyAdmin/Users', [
             'company' => $company
         ]);
     }
@@ -251,7 +251,7 @@ class CompanyController extends Controller
             session()->flash('error', 'Company not found');
             return redirect()->back();
         }
-        return Inertia::render('Company/Wallet', [
+        return Inertia::render('CompanyAdmin/Wallet', [
             'company' => $company
         ]);
     }

@@ -11,6 +11,7 @@ use App\Http\Controllers\FuelTypeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MakeController;
 use App\Http\Controllers\MakeModelController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TransmissionTypeController;
 use App\Http\Controllers\VehicleConditionController;
 use App\Http\Controllers\VehicleController;
@@ -45,6 +46,7 @@ Route::post('makes/load', [MakeController::class, 'load'])->name('makes.load');
 Route::post('make-models/{make}/load', [MakeModelController::class, 'load'])->name('make-models.load');
 Route::post('counties/load', [CountyController::class, 'load'])->name('counties.load');
 Route::post('currencies/load', [CurrencyController::class, 'load'])->name('currencies.load');
+
 
 // Register company step one
 Route::post('register/company', [HomeController::class, 'registerStepOne'])->name('home.register-step-one');
@@ -104,6 +106,7 @@ Route::middleware(['auth:web'])->group(function () {
 
         // App metadata
         Route::prefix('app-metadata')->group(function () {
+            Route::post('settings/load', [SettingController::class, 'load'])->name('settings.load');
             Route::resources([
                 'body-types' => BodyTypeController::class,
                 'drive-setups' => DriveSetupController::class,
@@ -115,6 +118,7 @@ Route::middleware(['auth:web'])->group(function () {
                 'make-models' => MakeModelController::class,
                 'counties' => CountyController::class,
                 'currencies' => CurrencyController::class,
+                'settings' => SettingController::class,
             ]);
         });
     });

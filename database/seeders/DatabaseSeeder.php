@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DriveSetupSeeder::class);
         $this->call(DriveTypeSeeder::class);
         $this->call(VehicleConditionSeeder::class);
+        $this->call(SettingSeeder::class);
         $this->call(AdminSeeder::class);
     }
 }
