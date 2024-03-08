@@ -29,6 +29,60 @@ class Vehicle extends Model
         if (!is_null(request('name')) && !empty(request('name'))) {
             $q->where('name', 'like', '%'.request('name').'%');
         }
+        if (!is_null(request('makeModelId')) && !empty(request('makeModelId'))) {
+            $q->where('make_model_id', request('makeModelId'));
+        }
+        if(!is_null(request('transmissionTypeId')) && !empty(request('transmissionTypeId'))){
+            $q->where('transmission_type_id', request('transmissionTypeId'));
+        }
+        if(!is_null(request('vehicleConditionId')) && !empty(request('vehicleConditionId'))){
+            $q->where('vehicle_condition_id', request('vehicleConditionId'));
+        }
+        if(!is_null(request('engineCapacity')) && !empty(request('engineCapacity'))){
+            $q->where('engine_capacity', request('engineCapacity'));
+        }
+        if(!is_null(request('fuelTypeId')) && !empty(request('fuelTypeId'))){
+            $q->where('fuel_type_id', request('fuelTypeId'));
+        }
+        if(!is_null(request('driveTypeId')) && !empty(request('driveTypeId'))){
+            $q->where('drive_type_id', request('driveTypeId'));
+        }
+        if(!is_null(request('bodyTypeId')) && !empty(request('bodyTypeId'))){
+            $q->where('body_type_id', request('bodyTypeId'));
+        }
+        if(!is_null(request('driveSetupId')) && !empty(request('driveSetupId'))){
+            $q->where('drive_setup_id', request('driveSetupId'));
+        }
+        if(!is_null(request('currencyId')) && !empty(request('currencyId'))){
+            $q->where('currency_id', request('currencyId'));
+        }
+        if(!is_null(request('price')) && !empty(request('price'))){
+            $q->where('price', request('price'));
+        }
+        if(!is_null(request('mileage')) && !empty(request('mileage'))){
+            $q->where('mileage', request('mileage'));
+        }
+        if(!is_null(request('yom')) && !empty(request('yom'))){
+            $q->where('yom', request('yom'));
+        }
+        if(!is_null(request('color')) && !empty(request('color'))){
+            $q->where('color', request('color'));
+        }
+        if(!is_null(request('horsePower')) && !empty(request('horsePower'))){
+            $q->where('horse_power', request('horsePower'));
+        }
+        if(!is_null(request('torque')) && !empty(request('torque'))){
+            $q->where('torque', request('torque'));
+        }
+        if(!is_null(request('availability')) && !empty(request('availability'))){
+            $q->where('availability', request('availability'));
+        }
+        if(!is_null(request('status')) && !empty(request('status'))){
+            $q->where('status', request('status'));
+        }
+        if(!is_null(request('paymentStatus')) && !empty(request('paymentStatus'))){
+            $q->where('payment_status', request('paymentStatus'));
+        }
         if (!is_null(request('sortBy')) && !empty(request('sortBy'))) {
             if (request('sortBy') == 'random') {
                 $q->inRandomOrder();

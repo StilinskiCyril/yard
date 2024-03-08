@@ -198,7 +198,7 @@
                                         <p v-else>PENDING</p>
                                     </td>
                                     <td>
-                                        <button @click.prevent="showMoreModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-question"></i> view</button>
+                                        <button @click.prevent="showMoreModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-question"></i> view features</button>
                                     </td>
                                     <td>
                                         <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>

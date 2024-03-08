@@ -119,6 +119,13 @@ class VehicleController extends Controller
 
     public function update(Request $request, Vehicle $vehicle)
     {
+        if (!$request->user()->hasRole('admin') && $vehicle->status){
+            return response()->json([
+                'status' => false,
+                'message' => 'You cannot update an approved vehicle. Contact customer support for assistance on '.env('CUSTOMER_SUPPORT_MSISDN')
+            ], 403);
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'makeModelId' => ['required', 'numeric'],
