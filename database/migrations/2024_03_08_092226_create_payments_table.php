@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->foreignId('company_id')->constrained();
-            $table->string('model')->nullable(); // e.g Vehicles
-            $table->integer('model_id')->nullable(); // e.g 1
-            $table->string('account_no')->unique(); // to be used for payment (mpesa)
+            $table->integer('channel')->nullable(); // 1: mpesa, 2: card, 3: paypal, 4: offline (e.g. invoice)
             $table->double('amount');
-            $table->boolean('payment_status')->default(false); // 0: pending, 1: paid
-            $table->dateTime('paid_on')->nullable();
+            $table->string('transaction_id')->nullable()->unique();
+            $table->dateTime('date');
+            $table->string('notes'); // name | msisdn | email | account_no (observe the order seperated by a vertical bar)
+            $table->ipAddress('ip')->nullable(); // provider api IP address
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('payments');
     }
 };
