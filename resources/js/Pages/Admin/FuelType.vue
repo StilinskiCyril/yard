@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Transmission Types" />
+    <Head title="Fuel Types" />
 
     <Layout>
 
@@ -10,11 +10,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-left">Manage Transmission Types</p>
+                                <p class="text-left">Manage Fuel Types</p>
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-circle-plus"></i>
-                                    Create Transmission Type
+                                    Create Fuel Type
                                 </button>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                         <form>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter transmission type">
+                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter fuel type e.g. (Petrol, Diesel)">
                                 </div>
                                 <div class="col-md-2">
                                     <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
@@ -40,7 +40,7 @@
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>Transmission Type</th>
+                                    <th>Fuel Type</th>
                                     <th colspan="2">Action</th>
                                 </tr>
                                 </thead>
@@ -76,7 +76,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create Transmission Type</h4>
+                        <h4 class="modal-title">Create Fuel Type</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -84,7 +84,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="createForm.type" placeholder="Enter transmission type e.g Automatic" type="text" class="form-control">
+                                            <input v-model="createForm.type" placeholder="Enter fuel type e.g. (Petrol, Diesel)" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -107,7 +107,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Transmission Type</h4>
+                        <h4 class="modal-title">Update Fuel Type</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -115,7 +115,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="updateForm.type" placeholder="Enter transmission type" type="text" class="form-control">
+                                            <input v-model="updateForm.type" placeholder="Enter fuel type e.g. (Petrol, Diesel)" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -144,7 +144,7 @@ import Layout from "../Layout.vue";
 import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
-    name: "TransmissionType",
+    name: "FuelType",
     components: {Layout, Link, Head, Bootstrap5Pagination},
     data() {
         return {
@@ -172,7 +172,7 @@ export default {
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('transmission-types.load', {page: page}), this.filterForm).then(response => {
+            axios.post(route('fuel-types.load', {page: page}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -185,7 +185,7 @@ export default {
         },
         createRecord(){
             this.createForm.processing = true;
-            axios.post(route('transmission-types.store'), this.createForm).then((response) => {
+            axios.post(route('fuel-types.store'), this.createForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
                     this.createForm.type = undefined;
@@ -207,7 +207,7 @@ export default {
         },
         updateRecord(){
             this.updateForm.processing = true;
-            axios.put(route('transmission-types.update', { transmission_type : this.updateForm.uuid}), this.updateForm).then((response) => {
+            axios.put(route('fuel-types.update', { fuel_type: this.updateForm.uuid}), this.updateForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
                     this.updateForm.type = undefined;
@@ -232,7 +232,7 @@ export default {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(route('transmission-types.destroy', {transmission_type: col.uuid})).then((response) => {
+                    axios.delete(route('fuel-types.destroy', {fuel_type: col.uuid})).then((response) => {
                         if (response.data.status){
                             this.loadPayloadFromApi();
                             Swal.fire('Success', response.data.message, 'success');

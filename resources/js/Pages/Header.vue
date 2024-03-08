@@ -27,8 +27,8 @@ export default {
                             <li><Link class="dropdown-item" :href="route('companies.show-wallet')">Company Wallet</Link></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Manage Vehicles</a>
+                    <li class="nav-item" v-if="$page.props.roles.includes('admin') || $page.props.roles.includes('company-admin') || $page.props.roles.includes('company-user')">
+                        <Link class="nav-link" :href="route('vehicles.index')">Manage Vehicles</Link>
                     </li>
                     <li class="nav-item dropdown" v-if="$page.props.roles.includes('admin') || $page.props.roles.includes('customer-support')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Customer Support</a>
@@ -59,10 +59,12 @@ export default {
                             <li><Link class="dropdown-item" :href="route('body-types.index')">Body Types</Link></li>
                             <li><Link class="dropdown-item" :href="route('drive-setups.index')">Drive Setups</Link></li>
                             <li><Link class="dropdown-item" :href="route('drive-types.index')">Drive Types</Link></li>
+                            <li><Link class="dropdown-item" :href="route('fuel-types.index')">Fuel Types</Link></li>
                             <li><Link class="dropdown-item" :href="route('makes.index')">Makes & Models</Link></li>
                             <li><Link class="dropdown-item" :href="route('transmission-types.index')">Transmission Types</Link></li>
                             <li><Link class="dropdown-item" :href="route('vehicle-conditions.index')">Vehicle Conditions</Link></li>
                             <li><Link class="dropdown-item" :href="route('counties.index')">Counties</Link></li>
+                            <li><Link class="dropdown-item" :href="route('currencies.index')">Currencies</Link></li>
                         </ul>
                     </li>
                 </ul>

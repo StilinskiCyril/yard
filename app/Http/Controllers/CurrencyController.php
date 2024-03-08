@@ -4,62 +4,65 @@ namespace App\Http\Controllers;
 
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class CurrencyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function load(Request $request)
+    {
+        if ($request->input('paginate')){
+            return Currency::filter($request)->paginate(50);
+        } else {
+            return Currency::filter($request)->get();
+        }
+    }
+
     public function index()
     {
-        //
+        return Inertia::render('Admin/Currency');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'currency' => ['required', 'string', 'max:50', 'unique:currencies']
+        ]);
+
+        Currency::create([
+            'currency' => $request->currency
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record created'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Currency $currency)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Currency $currency)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Currency $currency)
     {
-        //
+        $request->validate([
+            'currency' => ['required', 'string', 'max:50', Rule::unique('currencies')->ignore($currency->id)]
+        ]);
+
+        $currency->update([
+            'currency' => $request->currency
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record updated'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Currency $currency)
     {
-        //
+        $currency->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Record deleted'
+        ]);
     }
 }

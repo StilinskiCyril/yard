@@ -11,7 +11,6 @@ class CountyController extends Controller
 {
     public function load(Request $request)
     {
-        // Load counties
         if ($request->input('paginate')){
             return County::filter($request)->paginate(50);
         } else {

@@ -25,14 +25,14 @@ class WalletTransaction extends Model
         if (!is_null(request('end')) && !empty(request('end'))) {
             $q->where('created_at', '<=', request('end'));
         }
-        if (!is_null(request('sort_by')) && !empty(request('sort_by'))) {
-            if (request('sort_by') == 'random') {
+        if (!is_null(request('sortBy')) && !empty(request('sortBy'))) {
+            if (request('sortBy') == 'random') {
                 $q->inRandomOrder();
             }
-            if (request('sort_by') == 'latest') {
+            if (request('sortBy') == 'latest') {
                 $q->latest();
             }
-            if (request('sort_by') == 'oldest') {
+            if (request('sortBy') == 'oldest') {
                 $q->oldest();
             }
         }

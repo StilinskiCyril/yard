@@ -195,7 +195,7 @@ export default {
         return {
             payloadFromDb: {},
             filterForm: {
-                sort_by : 'latest',
+                sortBy : 'latest',
                 paginate: true,
                 keyword: undefined,
                 start: undefined,

@@ -15,21 +15,28 @@ class MakeModel extends Model
 
     protected $hidden = ['deleted_at', 'updated_at'];
 
+    protected $with = ['make'];
+
     public function scopeFilter($q){
         if (!is_null(request('model')) && !empty(request('model'))) {
             $q->where('model', 'like', '%'.request('model').'%');
         }
-        if (!is_null(request('sort_by')) && !empty(request('sort_by'))) {
-            if (request('sort_by') == 'random') {
+        if (!is_null(request('sortBy')) && !empty(request('sortBy'))) {
+            if (request('sortBy') == 'random') {
                 $q->inRandomOrder();
             }
-            if (request('sort_by') == 'latest') {
+            if (request('sortBy') == 'latest') {
                 $q->latest();
             }
-            if (request('sort_by') == 'oldest') {
+            if (request('sortBy') == 'oldest') {
                 $q->oldest();
             }
         }
         return $q;
+    }
+
+    public function make()
+    {
+        return $this->belongsTo(Make::class);
     }
 }

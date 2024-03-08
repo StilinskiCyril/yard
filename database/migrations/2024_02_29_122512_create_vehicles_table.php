@@ -28,15 +28,17 @@ return new class extends Migration
             $table->foreignId('currency_id')->constrained();
             $table->double('price');
             $table->integer('mileage'); // in km
-            $table->string('cover_image_url');
-            $table->string('youtube_url')->nullable();
             $table->integer('yom'); // year of manufacture
             $table->string('color'); // e.g. blue, gray
             $table->integer('horse_power'); // in hp
             $table->integer('torque'); // in Nm
+            $table->string('cover_photo_url');
+            $table->string('youtube_url')->nullable();
+            $table->text('features'); // e.g. sunroof, leather seats
             $table->boolean('is_featured')->default(false); // shown at the top of the list
             $table->integer('availability')->default(1); // 1: available, 2: sold, 3: in transit
-            $table->text('features'); // e.g. sunroof, leather seats
+            $table->boolean('status')->default(false); // 0: pending, 1: approved (only approved vehicles are shown on the website)
+            $table->boolean('payment_status')->default(false); // 0: pending, 1: paid
             $table->softDeletes();
             $table->timestamps();
         });

@@ -14,4 +14,22 @@ class FuelType extends Model
     protected $guarded = ['id'];
 
     protected $hidden = ['deleted_at', 'updated_at'];
+
+    public function scopeFilter($q){
+        if (!is_null(request('type')) && !empty(request('type'))) {
+            $q->where('type', 'like', '%'.request('type').'%');
+        }
+        if (!is_null(request('sortBy')) && !empty(request('sortBy'))) {
+            if (request('sortBy') == 'random') {
+                $q->inRandomOrder();
+            }
+            if (request('sortBy') == 'latest') {
+                $q->latest();
+            }
+            if (request('sortBy') == 'oldest') {
+                $q->oldest();
+            }
+        }
+        return $q;
+    }
 }

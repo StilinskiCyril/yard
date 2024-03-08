@@ -46,14 +46,14 @@ class Company extends Model
         if (!is_null(request('name')) && !empty(request('name'))) {
             $q->where('name', request('name'));
         }
-        if (!is_null(request('sort_by')) && !empty(request('sort_by'))) {
-            if (request('sort_by') == 'random') {
+        if (!is_null(request('sortBy')) && !empty(request('sortBy'))) {
+            if (request('sortBy') == 'random') {
                 $q->inRandomOrder();
             }
-            if (request('sort_by') == 'latest') {
+            if (request('sortBy') == 'latest') {
                 $q->latest();
             }
-            if (request('sort_by') == 'oldest') {
+            if (request('sortBy') == 'oldest') {
                 $q->oldest();
             }
         }

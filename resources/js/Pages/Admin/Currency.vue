@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Transmission Types" />
+    <Head title="Currency" />
 
     <Layout>
 
@@ -10,11 +10,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-left">Manage Transmission Types</p>
+                                <p class="text-left">Manage Currencies</p>
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <button @click.prevent="showCreateRecordModal()" class="btn btn-primary btn-sm"><i class="fas fa-circle-plus"></i>
-                                    Create Transmission Type
+                                    Create Currency
                                 </button>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                         <form>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <input v-model="filterForm.type" type="text" class="form-control" placeholder="Enter transmission type">
+                                    <input v-model="filterForm.currency" type="text" class="form-control" placeholder="Enter currency e.g. KES, USD">
                                 </div>
                                 <div class="col-md-2">
                                     <button v-if="filterForm.processing" class="btn btn-secondary w-100 spinner spinner-dark spinner-right">
@@ -40,14 +40,14 @@
                             <table class="table table-responsive table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>Transmission Type</th>
+                                    <th>Currency</th>
                                     <th colspan="2">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="col in payloadFromDb.data" :key="col.uuid">
                                     <td>
-                                        <p>{{ col.type }}</p>
+                                        <p>{{ col.currency }}</p>
                                     </td>
                                     <td>
                                         <button @click.prevent="showUpdateRecordModal(col)" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> update</button>
@@ -76,7 +76,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create Transmission Type</h4>
+                        <h4 class="modal-title">Create Currency</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -84,7 +84,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="createForm.type" placeholder="Enter transmission type e.g Automatic" type="text" class="form-control">
+                                            <input v-model="createForm.currency" placeholder="Enter currency e.g. KES, USD" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -107,7 +107,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Transmission Type</h4>
+                        <h4 class="modal-title">Update Currency</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card">
@@ -115,7 +115,7 @@
                                 <form>
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input v-model="updateForm.type" placeholder="Enter transmission type" type="text" class="form-control">
+                                            <input v-model="updateForm.currency" placeholder="Enter currency e.g. KES, USD" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -144,7 +144,7 @@ import Layout from "../Layout.vue";
 import { axiosErrorHandler } from '../../axiosErrorHandler.js';
 
 export default {
-    name: "TransmissionType",
+    name: "Currency",
     components: {Layout, Link, Head, Bootstrap5Pagination},
     data() {
         return {
@@ -152,16 +152,16 @@ export default {
             filterForm: {
                 sortBy : 'latest',
                 paginate: true,
-                type: undefined,
+                currency: undefined,
                 processing: false
             },
             createForm: {
-                type: undefined,
+                currency: undefined,
                 processing: false
             },
             updateForm: {
                 uuid: undefined,
-                type: undefined,
+                currency: undefined,
                 processing: false
             }
         }
@@ -172,7 +172,7 @@ export default {
     methods: {
         loadPayloadFromApi(page = 1){
             this.filterForm.processing = true;
-            axios.post(route('transmission-types.load', {page: page}), this.filterForm).then(response => {
+            axios.post(route('currencies.load', {page: page}), this.filterForm).then(response => {
                 this.payloadFromDb = response.data;
             }).catch(error => {
                 //
@@ -185,10 +185,10 @@ export default {
         },
         createRecord(){
             this.createForm.processing = true;
-            axios.post(route('transmission-types.store'), this.createForm).then((response) => {
+            axios.post(route('currencies.store'), this.createForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
-                    this.createForm.type = undefined;
+                    this.createForm.currency = undefined;
                     Swal.fire('Success', response.data.message, 'success');
                     $('#createRecordModal').modal('hide');
                 } else {
@@ -202,15 +202,15 @@ export default {
         },
         showUpdateRecordModal(col){
             this.updateForm.uuid = col.uuid;
-            this.updateForm.type = col.type;
+            this.updateForm.currency = col.currency;
             $('#updateRecordModal').modal('show');
         },
         updateRecord(){
             this.updateForm.processing = true;
-            axios.put(route('transmission-types.update', { transmission_type : this.updateForm.uuid}), this.updateForm).then((response) => {
+            axios.put(route('currencies.update', { currency: this.updateForm.uuid}), this.updateForm).then((response) => {
                 if (response.data.status){
                     this.loadPayloadFromApi();
-                    this.updateForm.type = undefined;
+                    this.updateForm.currency = undefined;
                     Swal.fire('Success', response.data.message, 'success');
                     $('#updateRecordModal').modal('hide');
                 } else {
@@ -232,7 +232,7 @@ export default {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(route('transmission-types.destroy', {transmission_type: col.uuid})).then((response) => {
+                    axios.delete(route('currencies.destroy', {currency: col.uuid})).then((response) => {
                         if (response.data.status){
                             this.loadPayloadFromApi();
                             Swal.fire('Success', response.data.message, 'success');
@@ -247,7 +247,7 @@ export default {
 
         },
         clearFilter(){
-            this.filterForm.type = undefined;
+            this.filterForm.currency = undefined;
             this.loadPayloadFromApi();
         }
     }

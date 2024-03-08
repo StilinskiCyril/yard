@@ -14,4 +14,22 @@ class Currency extends Model
     protected $guarded = ['id'];
 
     protected $hidden = ['deleted_at', 'updated_at'];
+
+    public function scopeFilter($q){
+        if (!is_null(request('currency')) && !empty(request('currency'))) {
+            $q->where('currency', 'like', '%'.request('currency').'%');
+        }
+        if (!is_null(request('sortBy')) && !empty(request('sortBy'))) {
+            if (request('sortBy') == 'random') {
+                $q->inRandomOrder();
+            }
+            if (request('sortBy') == 'latest') {
+                $q->latest();
+            }
+            if (request('sortBy') == 'oldest') {
+                $q->oldest();
+            }
+        }
+        return $q;
+    }
 }
