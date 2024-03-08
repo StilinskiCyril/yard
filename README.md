@@ -7,9 +7,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Yard
+## About AutoBuzz
 
-Car selling and buying
+Seamless car selling and buying
 
 ## Installation
 - clone the repository from github
@@ -18,11 +18,13 @@ Car selling and buying
 - configure the .env file with your database credentials and other settings
 - run `composer install` to install the dependencies
 - run `php artisan key:generate` to generate the application key
+- run `php artisan ziggy:generate` to generate the ziggy routes
 - run `php artisan:migrate` to create the tables
 - run `php db:seed` to seed the database
 - run `php artisan storage:link` to create a symbolic link to the storage directory
 - serve the app
 - run `npm install` to install the frontend dependencies
+- run `npm run dev` on local OR `npm run build` on production to compile the assets
 - login using the following credentials
   - email: aguvasucyril@gmail.com
   - password: aguvasucyril@gmail.com
