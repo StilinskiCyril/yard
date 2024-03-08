@@ -24,7 +24,6 @@ export default {
                         <ul class="dropdown-menu">
                             <li><Link class="dropdown-item" :href="route('companies.show-profile')">Company Profile</Link></li>
                             <li><Link class="dropdown-item" :href="route('companies.show-users')">Company Users</Link></li>
-                            <li><a class="dropdown-item" href="#">Company Payments</a></li>
                             <li><Link class="dropdown-item" :href="route('companies.show-wallet')">Company Wallet</Link></li>
                         </ul>
                     </li>
@@ -50,6 +49,7 @@ export default {
                             <li><a class="dropdown-item" href="#">Vehicles</a></li>
                             <li><a class="dropdown-item" href="#">Users</a></li>
                             <li><a class="dropdown-item" href="#">Payments</a></li>
+                            <li><a class="dropdown-item" href="#">Transactions</a></li>
                             <li><a class="dropdown-item" href="#">App Settings</a></li>
                         </ul>
                     </li>
